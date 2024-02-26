@@ -1,0 +1,42 @@
+{
+    "name": "My Read pinmarker",
+    "version": "0.1.0",
+    "description": "Saving history latest read",
+    "permissions": ["storage", "tabs"],
+    "host_permissions": ["<all_urls>"],
+    "background": {
+      "scripts": ["background.js"]
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["contentScript.js"]
+      }
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": [
+          "assets/bookmark.png",
+          "assets/delete.png"
+        ],
+        "matches": ["<all_urls>"]
+      }
+    ],
+    "action": {
+      "default_icon": {
+        "16": "assets/ext-icon.png",
+        "24": "assets/ext-icon.png",
+        "32": "assets/ext-icon.png"
+      },
+      "default_title": "My Read pinmarker",
+      "default_popup": "popup.html"
+    },
+    "manifest_version": 3,
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "myread@pinmarker.com",
+        "strict_min_version": "57.0"
+      }
+    }
+  }
+  
