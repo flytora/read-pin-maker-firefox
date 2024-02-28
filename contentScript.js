@@ -3,12 +3,16 @@
   let currentChapter = "";
 
   let currentReadPins = [];
-
+  
+  
   const isValidDomain = (url) => {
     const hostname = new URL(url).hostname;
+    let a = false;
 
-    const domainPattern = /^.*\.shinigami\.[a-z]+$/i;
-    return domainPattern.test(hostname);
+    if(hostname.includes("shinigami") || hostname.includes("mgkomik")){
+      a = true;
+    }
+    return a;
   }
 
 
@@ -31,6 +35,7 @@
 
       currentReadPins = await fetchPins();
 
+
       browser.storage.sync.set({
         [currentTitle]: JSON.stringify([...currentReadPins, newPin].sort((a, b) => a.chapter - b.chapter))
       });
@@ -41,6 +46,7 @@
       currentReadPins = await fetchPins();
 
       const found = currentReadPins.some(a => a.chapter === currentChapter);
+      
 
       if (!found) {
         AddNewPinEventHandler()
@@ -54,7 +60,7 @@
       const getLists = document.querySelectorAll('.wp-manga-chapter');
 
       for (const element of getLists) {
-        const getLink = element.querySelector('.chapter-link a');
+        const getLink = element.querySelector('a');
         const getHref = getLink.getAttribute("href");
         const dataSplit = getHref.split("/");
         const getChapter = dataSplit[5];
@@ -71,6 +77,7 @@
     }
 
     browser.runtime.onMessage.addListener((request) => {
+      
       const {
         type,
         value,
@@ -81,7 +88,7 @@
       if (type === "NEW") {
         currentTitle = title;
         currentChapter = chapter;
-
+        
         newReadLoaded();
       } else if (type === "DELETE") {
         currentReadPins = currentReadPins.filter((b) => b.chapter != value);
@@ -94,6 +101,8 @@
         currentTitle = title;
         setReadedContent();
       }
+
+      return Promise.resolve({ response: "success" });
 
     });
 

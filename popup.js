@@ -66,17 +66,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   const getUrl = activeTab.url;
   const datas = getUrl.split("/");
   
-  if (getUrl.includes("shinigami")) {
+  if (getUrl.includes("shinigami") || getUrl.includes("mgkomik")) {
     
-    if(getUrl.includes("series") && datas[4]){
+    if(getUrl.includes("series") || getUrl.includes("komik")){
+
+      if(datas[4]){
+        const getTitle = datas[4];
+    
+        browser.storage.sync.get([getTitle], (data) => {
+          const currentReadPins = data[getTitle] ? JSON.parse(data[getTitle]) : [];
+    
+          viewBookmarks(currentReadPins);
+        });
+      }
       
-      const getTitle = datas[4];
-  
-      browser.storage.sync.get([getTitle], (data) => {
-        const currentReadPins = data[getTitle] ? JSON.parse(data[getTitle]) : [];
-  
-        viewBookmarks(currentReadPins);
-      });
 
     }else{
       const container = document.getElementsByClassName("container")[0];
